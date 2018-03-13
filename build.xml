@@ -1,4 +1,4 @@
-<project name="helloworld" default="war">
+<project name="hello" default="war">
 	<property name="src" location="src/java" />
 	<property name="libcompile" location="lib/compile" />
 	<property name="libruntime" location="lib/runtime" />
@@ -7,7 +7,7 @@
 	<property name="build" location="build" />
 	<property name="classes" location="${build}/classes" />
 
-	<property name="version" value="0.1-dev" />
+	<property name="version" value="0.1" />
 	<property name="source" value="1.7" />
 	<property name="target" value="1.7" />
 
