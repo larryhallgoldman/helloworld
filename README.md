@@ -1,6 +1,6 @@
 # Helloworld WAR
 
-### A example Java WAR project / template project
+### A simple example to create Java WAR project / template project
 
 Contains:
 - Helloworld servlet (using Annotations)
@@ -46,4 +46,13 @@ or it won't be included in the war file when you build it).
 
 #### LICENSE
 Licensed under [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html).
+
+A
+A
+A
+A
+A
+A
+A
+A
 
