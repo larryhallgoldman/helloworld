@@ -87,12 +87,13 @@ setInterval(GetClock,1000);
 <script>
 function disp()
 {
-str1 = location.host();
+str1 = location.host;
 alert(str1);
 }
 </script>
 
 <cfoutput>
+disp()
 <a href="##" onclick="disp();">Click me</a>
 </cfoutput>
 <cfabort>
