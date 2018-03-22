@@ -1,0 +1,135 @@
+    
+def PIPELINE1 = 'DEFCON 0'
+def PIPELINE2 = 'DEFCON 0'
+def PIPELINE3 = 'DEFCON 0'
+pipeline {
+
+    agent any
+    
+    environment {
+        PIPELINE1 = 'IS THIS A PIPEDREAM'
+        PIPELINE2 = 'BUILDING A BEAUTIFUL PIPELINE'
+        PIPELINE3 = 'AT THE STARTING LINE'
+    }
+    
+    stages {
+        stage('Phase: pre-build') {
+            steps {
+                script {
+                    PIPELINE1 = sh(returnStdout: true, script: 'date')
+                }
+                echo "_ HACK ENV#1: ${PIPELINE1}"
+                echo "_ HACK ENV#2: ${PIPELINE2}"
+                echo "_ HACK ENV#3: ${PIPELINE3}"
+            }
+        }
+        stage('phase0: Infra') {
+            environment {
+                PIPELINE1 = 'WELCOME TO PHASE 0'
+                PIPELINE2 = 'WELCOME TO PHASE 0'
+            }
+            steps {
+                echo "P0 - set Welcome"
+                echo "Start with ID and Permissions checked."
+                script {
+                    build "J101"
+                    echo "Code Extraction from SVN reprository."
+                    sh 'printenv'
+                }
+                echo "Validate Infrastructure Ready."
+            }
+        }   
+        stage('phase1: Prep') {
+            environment {
+                    PIPELINE1 = 'PIPER @ GATES OF DAWN'
+                }
+            steps {
+                echo "Prep for Legacy Data"
+                echo "Load Legacy Data from Source"
+                script {
+                    build "J101"
+                }
+                echo "Validate Legacy Data"
+                sh 'echo "P1-SHELL  HACK ENV#1: ${PIPELINE1}"'
+                sh 'printenv'
+            }
+        }
+        stage('phase2: Stage') {
+            environment {
+                    PIPELINE3 = 'PIED PIPER'
+            }
+            steps {
+                echo sh(script: 'env', returnStdout: true)
+                echo "Prep Staging Databases"
+                echo "Load Staging Databases"
+                script {
+                    build "J101"
+                    sh (script: 'export PIPELINE3="PHASE III"', returnStdout: true)
+                    sh 'printenv'
+                    echo "P2 HACK ENV#3: ${PIPELINE3}"
+                }
+                echo "P2 HACK ENV#3: ${PIPELINE3}"
+                echo "Validate Staging Databases"
+            }
+        }
+        stage('phase3: XREF') {
+            environment {
+                PIPELINE3 = 'Chevelle SS'
+            }
+            steps {
+                echo "P3 HACK ENV#1: ${PIPELINE1}"
+                echo "P3 HACK ENV#2: ${PIPELINE2}"
+                echo "P3 HACK ENV#3: ${PIPELINE3}"
+                echo "Prep XREF"
+                echo "Load XREF"
+                script {
+                    build "J101"
+                }
+                echo "Validate XREF"
+            }
+        }
+        stage('phase4: Transform') {
+            environment {
+                PIPELINE1 = 'IS_A_PIPE_DREAM'
+                PIPELINE2 = 'BUILD_A_PIPELINE'
+            }
+            steps {
+                echo "Prep for Transformation"
+                echo "Execute Data Transformation"
+                echo "Validate Transformation"
+                sh 'printenv'
+            }
+        }
+        stage('phase5: UserTest') {
+            steps {
+                echo "User Scripts Loaded."
+                echo "QA Execution Engine Enabled"
+                echo "QA UserTest Succeeds"
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'This will always run' 
+            mail bcc: '', body: 'Performance Statistics', cc: '', from: 'jenkins', subject: 'Management Reporting', to: 'lgoldman@localhost'
+        }
+        success {
+            echo 'This will run only if successful'
+            mail bcc: '', body: 'High fives & happy faces!  :-)', cc: '', from: 'jenkins', subject: 'You are a winner!', to: 'lgoldman@localhost'
+        }
+        failure {
+            echo 'This will run only if failed'
+            mail bcc: '', body: '...Could be raining!', cc: '', from: 'jenkins', subject: 'Coud be worse...', to: 'lgoldman@localhost'
+        }
+        unstable {
+            echo 'This will run only if the run was marked as unstable'
+            mail bcc: '', body: 'A mind is a terrible thing to waste!  :-(', cc: '', from: 'jenkins', subject: 'Trouble in Paradise', to: 'lgoldman@localhost'
+        }
+        changed {
+            echo 'This will run only if the state of the Pipeline has changed'
+            echo 'For example, if the Pipeline was previously failing but is now successful'
+            mail bcc: '', body: 'Calling the police!  :-|', cc: '', from: 'jenkins', subject: 'Foxes in the henhouse!', to: 'lgoldman@localhost'
+        }
+    }
+}
