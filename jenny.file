@@ -1,12 +1,13 @@
 def DATABASE1 = 'DEFCON 0'
-def PIPELINE3 = 'AT THE STARTING LINE'
+def PIPEVAR = 'DEFCON 0'
+
 pipeline {
 
     agent any
     
     environment {
         DATABASE1 = 'ELNK_6'
-        PIPELINE3 = 'AT THE STARTING LINE'
+        PIPEVAR = 'AT THE STARTING LINE'
     }
     
     stages {
@@ -14,7 +15,7 @@ pipeline {
             steps {
                 echo "Validate Infrastructure Ready."
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                   PIPEVAR = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
                 echo "Code Extraction from SVN reprository."
                 script {
@@ -23,43 +24,45 @@ pipeline {
                 }
                 echo " Validate Hosts, ID and Permissions."
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
                 }
-                echo "ENV#0 ${PIPELINE3}"
+                echo "ENV#0 ${PIPEVAR}"
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                   PIPEVAR = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
-                echo "ENV#0 ${PIPELINE3}"
+                echo "ENV#0 ${PIPEVAR}"
             }
         }   
         stage('phase1: Prep') {
             steps {
                 echo "Prep for Legacy Data"
 		script {
-                  echo "Script: A) DC 400 extract – Customer Product information extracts -Tables identified as source for M6"
-                  echo "Script: B) Wave extract – Customer product information extracts"
+                  echo "Validate initial sources of Legacy Data"
+                  echo "Script: A) DC 400 extract – Tables identified as source for M6"
+                  echo "Script: B) Wave extract – Customer product information extracts" 
                   echo "Script: C) Stars Extract – Customer product information extracts"
 		}
-                echo "Load Legacy Data from Source"
+                echo "Load Legacy Inventory & Customer Data from Sources"
                 script {
-                  echo "Script: E) EarthLink M6 Extract – Inventory extracts for TN Inventory and Circuits; Product extracts"
+                  echo "Script: E) EarthLink M6 Extract – TN Inventory and Circuits; Product extracts"
                   echo "Script: F) NGMSS Extract – Object cross references for circuits and customer accounts"
                 }
+                echo "Continue to Load Legacy Data"
 		script {
                   echo "Script: D) Customer repository – Master repository used by all groups"
                   echo "Script: H) Transformation to Pre-stage product orders for completed and in-flight orders"
 		}
                 echo "Validate Legacy Data"
+                sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
+                script {
+                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                }
+                echo "ENV#0 ${PIPEVAR}"
+                script {
+                   PIPEVAR = sh(returnStderr: true, script: 'ping -c3 localhost')
+                }
+                echo "ENV#0 ${PIPEVAR}"
                 sh 'printenv'
-                sh 'echo "Validation and QA scripting executes here"'
-                script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
-                }
-                echo "ENV#0 ${PIPELINE3}"
-                script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
-                }
-                echo "ENV#0 ${PIPELINE3}"
             }
         }
         stage('phase2: Stage') {
@@ -74,15 +77,15 @@ pipeline {
                     echo "Script: K) In-Flight order staging phase – Transformation of Products on pending orders"
                 }
                 echo "Validate Staging Databases"
-                sh 'echo "Validation and QA scripting executes here"'
+                sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
                 }
-                echo "ENV#0 ${PIPELINE3}"
+                echo "ENV#0 ${PIPEVAR}"
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                   PIPEVAR = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
-                echo "ENV#0 ${PIPELINE3}"
+                echo "ENV#0 ${PIPEVAR}"
             }
         }
         stage('phase3: XREF') {
@@ -95,14 +98,15 @@ pipeline {
                      echo "Script: N) Load phase – Load of PSR for pending orders"
                 }
                 echo "Validate XREF"
+                sh 'echo "Validation and QA scripting executes here"'
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
                 }
-                echo "ENV#0 ${PIPELINE3}"
+                echo "ENV#0 ${PIPEVAR}"
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                   PIPEVAR = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
-                echo "ENV#0 ${PIPELINE3}"
+                echo "ENV#0 ${PIPEVAR}"
             }
         }
         stage('phase4: Transform') {
@@ -114,11 +118,14 @@ pipeline {
                 echo "Script: P) Sync with NGMSS – Sync of customer accounts, circuits and PSR s."
                 echo "Script: Q) Reload of downgraded network system components"
                 sh 'printenv'
+                echo "Validate Transformation"
+                sh 'echo "Initial Validation and QA scripting executes here"'
             }
         }
         stage('phase5: UserTest') {
             steps {
-                echo "Validate Transformation"
+                echo "User Driven Validations"
+                sh 'echo "Validation and QA scripting executes here"'
                 echo "User Scripts Loaded."
                 echo "QA Execution Engine Enabled"
                 echo "QA UserTest Succeeds"
