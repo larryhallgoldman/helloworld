@@ -24,7 +24,7 @@ pipeline {
                 }
                 echo " Validate Hosts, ID and Permissions."
                 script {
-                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStdout: true, script: 'echo "sh scripted_sql -d $DATABASE1"')
                 }
                 echo "ENV#0 ${PIPEVAR}"
                 script {
@@ -55,7 +55,7 @@ pipeline {
                 echo "Validate Legacy Data"
                 sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
                 script {
-                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStdout: true, script: 'echo "sh scripted_sql -d $DATABASE1"')
                 }
                 echo "ENV#0 ${PIPEVAR}"
                 script {
@@ -79,7 +79,7 @@ pipeline {
                 echo "Validate Staging Databases"
                 sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
                 script {
-                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStdout: true, script: 'echo "sh scripted_sql -d $DATABASE1"')
                 }
                 echo "ENV#0 ${PIPEVAR}"
                 script {
@@ -100,7 +100,7 @@ pipeline {
                 echo "Validate XREF"
                 sh 'echo "Validation and QA scripting executes here"'
                 script {
-                   PIPEVAR = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                   PIPEVAR = sh(returnStdout: true, script: 'echo "sh scripted_sql -d $DATABASE1"')
                 }
                 echo "ENV#0 ${PIPEVAR}"
                 script {
