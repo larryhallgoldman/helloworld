@@ -21,8 +21,6 @@ pipeline {
                     build "J101"
                     sh 'printenv'
                 }
-            }
-            steps {
                 echo " Validate Hosts, ID and Permissions."
                 script {
                    PIPELINE3 = sh(returnStderr: true, script: 'sql -d DATABASE1')
