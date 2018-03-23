@@ -1,107 +1,101 @@
-    
-def PIPELINE1 = 'DEFCON 0'
-def PIPELINE2 = 'DEFCON 0'
-def PIPELINE3 = 'DEFCON 0'
+def DATABASE1 = 'DEFCON 0'
+def PIPELINE3 = 'AT THE STARTING LINE'
 pipeline {
 
     agent any
     
     environment {
-        PIPELINE1 = 'IS THIS A PIPEDREAM'
-        PIPELINE2 = 'BUILDING A BEAUTIFUL PIPELINE'
+        DATABASE1 = 'ELNK_6'
         PIPELINE3 = 'AT THE STARTING LINE'
     }
     
     stages {
-        stage('Phase: pre-build') {
+        stage('phase0: Build Release') {
             steps {
+                echo "Validate Infrastructure Ready."
                 script {
-                    PIPELINE1 = sh(returnStdout: true, script: 'date')
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping suns112')
                 }
-                echo "_ HACK ENV#1: ${PIPELINE1}"
-                echo "_ HACK ENV#2: ${PIPELINE2}"
-                echo "_ HACK ENV#3: ${PIPELINE3}"
-            }
-        }
-        stage('phase0: Infra') {
-            environment {
-                PIPELINE1 = 'WELCOME TO PHASE 0'
-                PIPELINE2 = 'WELCOME TO PHASE 0'
-            }
-            steps {
-                echo "P0 - set Welcome"
-                echo "Start with ID and Permissions checked."
+                echo "Code Extraction from SVN reprository."
                 script {
                     build "J101"
-                    echo "Code Extraction from SVN reprository."
                     sh 'printenv'
                 }
-                echo "Validate Infrastructure Ready."
+            }
+            steps {
+                echo " Validate Hosts, ID and Permissions."
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'sql -d DATABASE1')
+                }
+                echo "ENV#0 ${PIPELINE3}"
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping svn-2')
+                }
+                echo "ENV#0 ${PIPELINE3}"
             }
         }   
         stage('phase1: Prep') {
-            environment {
-                    PIPELINE1 = 'PIPER @ GATES OF DAWN'
-                }
             steps {
                 echo "Prep for Legacy Data"
+		script {
+                  echo "Script: A) DC 400 extract – Customer Product information extracts -Tables identified as source for M6"
+                  echo "Script: B) Wave extract – Customer product information extracts"
+                  echo "Script: C) Stars Extract – Customer product information extracts"
+		}
                 echo "Load Legacy Data from Source"
                 script {
-                    build "J101"
+                  echo "Script: E) EarthLink M6 Extract – Inventory extracts for TN Inventory and Circuits; Product extracts"
+                  echo "Script: F) NGMSS Extract – Object cross references for circuits and customer accounts"
                 }
+		script {
+                  echo "Script: D) Customer repository – Master repository used by all groups"
+                  echo "Script: H) Transformation to Pre-stage product orders for completed and in-flight orders"
+		}
                 echo "Validate Legacy Data"
-                sh 'echo "P1-SHELL  HACK ENV#1: ${PIPELINE1}"'
                 sh 'printenv'
+                sh 'echo "Validation and QA scripting executes here"'
             }
         }
         stage('phase2: Stage') {
-            environment {
-                    PIPELINE3 = 'PIED PIPER'
-            }
             steps {
                 echo sh(script: 'env', returnStdout: true)
                 echo "Prep Staging Databases"
                 echo "Load Staging Databases"
                 script {
-                    build "J101"
-                    sh (script: 'export PIPELINE3="PHASE III"', returnStdout: true)
                     sh 'printenv'
-                    echo "P2 HACK ENV#3: ${PIPELINE3}"
+                    echo "Script: I) Inventory staging phase - Transformation of TN inventory and circuit inventory for HPAE"
+                    echo "Script: J) Completed order staging phase – Transformation of Products on complete orders"
+                    echo "Script: K) In-Flight order staging phase – Transformation of Products on pending orders"
                 }
-                echo "P2 HACK ENV#3: ${PIPELINE3}"
                 echo "Validate Staging Databases"
             }
         }
         stage('phase3: XREF') {
-            environment {
-                PIPELINE3 = 'Chevelle SS'
-            }
             steps {
-                echo "P3 HACK ENV#1: ${PIPELINE1}"
-                echo "P3 HACK ENV#2: ${PIPELINE2}"
-                echo "P3 HACK ENV#3: ${PIPELINE3}"
                 echo "Prep XREF"
                 echo "Load XREF"
                 script {
-                    build "J101"
+                     echo "Script: L) Load phase – Load of inventory (TNI & Circuits)"
+                     echo "Script: M) Load phase – Load of PSR for completed orders"
+                     echo "Script: N) Load phase – Load of PSR for pending orders"
                 }
                 echo "Validate XREF"
             }
         }
         stage('phase4: Transform') {
-            environment {
-                PIPELINE1 = 'IS_A_PIPE_DREAM'
-                PIPELINE2 = 'BUILD_A_PIPELINE'
-            }
             steps {
                 echo "Prep for Transformation"
+                echo "Script: G) NGMSS Extract – Network System and Network connection extracts used for downgrade"
+                echo "Script: O) Sync new items with NGMSS"
                 echo "Execute Data Transformation"
-                echo "Validate Transformation"
+                echo "Script: P) Sync with NGMSS – Sync of customer accounts, circuits and PSR s."
+                echo "Script: Q) Reload of downgraded network system components"
                 sh 'printenv'
             }
         }
         stage('phase5: UserTest') {
             steps {
+                echo "Validate Transformation"
                 echo "User Scripts Loaded."
                 echo "QA Execution Engine Enabled"
                 echo "QA UserTest Succeeds"
@@ -133,3 +127,4 @@ pipeline {
         }
     }
 }
+
