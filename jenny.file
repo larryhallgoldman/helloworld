@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo "Validate Infrastructure Ready."
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping  -c3 suns112')
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
                 echo "Code Extraction from SVN reprository."
                 script {
@@ -23,11 +23,11 @@ pipeline {
                 }
                 echo " Validate Hosts, ID and Permissions."
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'sql -d DATABASE1')
+                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
                 }
                 echo "ENV#0 ${PIPELINE3}"
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 svn-2')
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
                 echo "ENV#0 ${PIPELINE3}"
             }
@@ -52,6 +52,14 @@ pipeline {
                 echo "Validate Legacy Data"
                 sh 'printenv'
                 sh 'echo "Validation and QA scripting executes here"'
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                }
+                echo "ENV#0 ${PIPELINE3}"
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                }
+                echo "ENV#0 ${PIPELINE3}"
             }
         }
         stage('phase2: Stage') {
@@ -66,6 +74,15 @@ pipeline {
                     echo "Script: K) In-Flight order staging phase – Transformation of Products on pending orders"
                 }
                 echo "Validate Staging Databases"
+                sh 'echo "Validation and QA scripting executes here"'
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                }
+                echo "ENV#0 ${PIPELINE3}"
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                }
+                echo "ENV#0 ${PIPELINE3}"
             }
         }
         stage('phase3: XREF') {
@@ -78,6 +95,14 @@ pipeline {
                      echo "Script: N) Load phase – Load of PSR for pending orders"
                 }
                 echo "Validate XREF"
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'echo "sh sql -d $DATABASE1"')
+                }
+                echo "ENV#0 ${PIPELINE3}"
+                script {
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 localhost')
+                }
+                echo "ENV#0 ${PIPELINE3}"
             }
         }
         stage('phase4: Transform') {
