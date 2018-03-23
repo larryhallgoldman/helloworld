@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo "Validate Infrastructure Ready."
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping suns112')
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping  -c3 suns112')
                 }
                 echo "Code Extraction from SVN reprository."
                 script {
@@ -27,7 +27,7 @@ pipeline {
                 }
                 echo "ENV#0 ${PIPELINE3}"
                 script {
-                   PIPELINE3 = sh(returnStderr: true, script: 'ping svn-2')
+                   PIPELINE3 = sh(returnStderr: true, script: 'ping -c3 svn-2')
                 }
                 echo "ENV#0 ${PIPELINE3}"
             }
