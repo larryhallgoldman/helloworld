@@ -63,6 +63,7 @@ pipeline {
                 echo ${STATUSCODE}
                 echo sh(script: 'env', returnStdout: true)
                 echo "END Legacy Data!"
+            }
         }
         stage('phase2: Stage') {
             steps {
