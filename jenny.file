@@ -38,10 +38,10 @@ pipeline {
             steps {
                 echo "Prep for Legacy Data"
 		script {
-                  echo "Validate initial sources of Legacy Data"
-                  echo "Script: A) DC 400 extract – Tables identified as source for M6"
-                  echo "Script: B) Wave extract – Customer product information extracts" 
-                  echo "Script: C) Stars Extract – Customer product information extracts"
+                   echo "Validate initial sources of Legacy Data"
+                   echo "Script: A) DC 400 extract – Tables identified as source for M6"
+                   echo "Script: B) Wave extract – Customer product information extracts" 
+                   echo "Script: C) Stars Extract – Customer product information extracts"
 		}
                 echo "Load Legacy Inventory & Customer Data from Sources"
                 script {
@@ -53,14 +53,16 @@ pipeline {
                   echo "Script: D) Customer repository – Master repository used by all groups"
                   echo "Script: H) Transformation to Pre-stage product orders for completed and in-flight orders"
 		}
-                script {
                 echo "Validate Legacy Data"
-                      sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
-                      PIPEVAR = sh(returnStdout: true, script: 'echo "sh scripted_sql -d $DATABASE1"')
-	              STATUSCODE=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/' )
+                script {
+                    sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
+	            PIPEVAR=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/' )
+	            STATUSCODE=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/' )
                 }
-                echo "Validate Legacy Data Returned:  ${STATUSCODE}"
-                echo sh(script: 'env', returnStdout: true)
+                echo "Validate STDERR Data Returned:  ${STATUSCODE}"
+                echo "Validate STDOUT Data Returned:  ${PIPEVAR}"
+"
+                echo sh(script: 'env|sort', returnStdout: true)
                 echo "END Legacy Data!"
             }
         }
