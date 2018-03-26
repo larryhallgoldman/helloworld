@@ -55,7 +55,7 @@ pipeline {
 		}
                 echo "Validate Legacy Data"
                 sh 'echo "SCRIPT: Validation and external QA scripting goes here"'
-		STATUSCODE=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/ )
+		STATUSCODE=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/ `)
 
 		script {
                     # error handling
