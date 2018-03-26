@@ -59,8 +59,7 @@ pipeline {
                       PIPEVAR = sh(returnStdout: true, script: 'echo "sh scripted_sql -d $DATABASE1"')
 	              STATUSCODE=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/' )
                 }
-                echo "Validate Legacy Data Returned: "
-                echo ${STATUSCODE}
+                echo "Validate Legacy Data Returned:  ${STATUSCODE}"
                 echo sh(script: 'env', returnStdout: true)
                 echo "END Legacy Data!"
             }
