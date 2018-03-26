@@ -61,9 +61,8 @@ pipeline {
                 }
                 echo "Validate STDERR Data Returned:  ${STATUSCODE}"
                 echo "Validate STDOUT Data Returned:  ${PIPEVAR}"
-"
                 echo sh(script: 'env|sort', returnStdout: true)
-                echo "END Legacy Data!"
+                echo "#### PHASE1!  ENDS####"
             }
         }
         stage('phase2: Stage') {
@@ -108,6 +107,7 @@ pipeline {
                    PIPEVAR = sh(returnStderr: true, script: 'ping -c3 localhost')
                 }
                 echo "ENV#0 ${PIPEVAR}"
+                echo "#### PHASE2!  ENDS####"
             }
         }
         stage('phase4: Transform') {
