@@ -60,7 +60,6 @@ pipeline {
 	              STATUSCODE=sh(returnStderr: true, script: 'curl --fail --show-error --silent  http://localhost:8888/hello-J101/' )
                 }
 		script {
-                    # error handling
                     if test $STATUSCODE -ne 0; then
                	         echo "Validate Legacy Data Returned: '
                          echo $STATUSCODE
